@@ -3,7 +3,7 @@ import {isEmpty, identity, filter, map, reduce, compose, fromPairs, prop} from '
 const LEGALLY_UNLIKELY_DATE = new Date('1700-01-01') // TODO: start of the NHS? 
 
 export const flattenExtensionsArray = (inputArray = []) => {
-    return inputArray.reduce((acc = [], cur = {}, i) => { // todo lodash
+    return inputArray.reduce((acc = [], cur = {}, i) => {
         console.log(i)
         const { extension, valuePeriod, valueCoding } = cur
         const start = valuePeriod?.start
@@ -37,7 +37,7 @@ const withoutEmpty = compose(
 const extractStart = prop('start')
 const extractValueCoding = prop('valueCoding')
 
-const getMinStart = reduce((acc, cur) => (cur > acc ? acc : cur), LEGALLY_UNLIKELY_DATE)
+const getMinStart = reduce((acc, cur) => (cur > acc ? acc : cur), LEGALLY_UNLIKELY_DATE) // would probably go back and look at the ramda docs for a max/min(list) function tbh
 
 const getMaxStart = reduce((acc, cur) => (cur < acc ? acc : cur), LEGALLY_UNLIKELY_DATE)
 
@@ -46,8 +46,8 @@ const tapLog = msg => value => {
     console.log({msg, value})
     return value
 }
-/* CPU intensive, but I don't know whether the elements here will want to be reused and will diverge so I trust fast computers over my capacity to debug multi-purpose
-control flows */
+/* CPU intensive having to run this whole flow 3 times, but I don't know whether the elements here will want to be reused and will diverge so I trust fast computers over my capacity to debug multi-purpose
+control flows, also I didn't want to declare any new objects within this lib initially */
 const minimumStartFromRootObject = compose(
     getMinStart,
     tapLog('min - onlyStarts'),
