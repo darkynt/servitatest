@@ -29,6 +29,8 @@ const withoutEmpty = compose(
     filter(identity) // removes undefineds
 )
 
+/* NB: this format despite not being used here well (yet) allows us to unit test the hell out of each of our steps by exporting them */
+
 const extractStart = prop('start')
 const extractValueCoding = prop('valueCoding')
 
