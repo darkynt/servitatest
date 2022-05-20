@@ -4,19 +4,14 @@ const LEGALLY_UNLIKELY_DATE = new Date('1700-01-01') // TODO: start of the NHS?
 
 export const flattenExtensionsArray = (inputArray = []) => {
     return inputArray.reduce((acc = [], cur = {}, i) => {
-        console.log(i)
         const { extension, valuePeriod, valueCoding } = cur
         const start = valuePeriod?.start
-        console.log('HALP', {
-            extension, valuePeriod
-        })
-
-        let additionalExtensions = []
+        let additionalExtensions = [] // refactor this out
         if (extension) {
             additionalExtensions = flattenExtensionsArray(extension) // TODO: trampoline
         }
         if (valuePeriod?.extension) {
-            additionalExtensions = [...flattenExtensionsArray(valuePeriod.extension)]
+            additionalExtensions = [...flattenExtensionsArray(valuePeriod.extension)] // TODO: trampoline
         }
         const newItem = {
             ...(valuePeriod && {valuePeriod}),
@@ -24,7 +19,7 @@ export const flattenExtensionsArray = (inputArray = []) => {
             ...(start && {start})
         }
         const buildList = [...acc, {...newItem}, ...additionalExtensions]
-        console.log('list:', buildList)
+
         return buildList
     }, [])
 }
